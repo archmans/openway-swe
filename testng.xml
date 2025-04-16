@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="TryTest" verbose="1">
+    <test name="TryTest">
+        <parameter name="url" value="https://www.youtube.com/"/>
+        <classes>
+            <class name="Test.TryTest"/>
+        </classes>
+    </test>
+</suite>
