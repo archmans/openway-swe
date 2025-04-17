@@ -11,30 +11,36 @@ import pageobjects.*;
 
 public class ShoppingCartTest {
     WebDriver driver;
+
     String url;
     String email;
     String password;
     String bookTitle1;
+    String bookTitle2;
+
     NavBar navBar;
     SignIn signIn;
     SearchProduct searchProduct;
     Product product;
+    Cart cart;
 
-    @Parameters({"url", "email", "password", "bookTitle1"})
+    @Parameters({"url", "email", "password", "bookTitle1", "bookTitle2"})
     @BeforeTest
-    public void setUp(String url, String email, String password, String bookTitle1) {
+    public void setUp(String url, String email, String password, String bookTitle1, String bookTitle2) {
         driver = new ChromeDriver();
 
         this.url = url;
         this.email = email;
         this.password = password;
         this.bookTitle1 = bookTitle1;
+        this.bookTitle2 = bookTitle2;
 
         driver.get(url);
         navBar = new NavBar(driver);
         signIn = new SignIn(driver);
         searchProduct = new SearchProduct(driver);
         product = new Product(driver);
+        cart = new Cart(driver);
     }
 
     @Test(priority = 1)
@@ -106,6 +112,77 @@ public class ShoppingCartTest {
         product.clickAddToCartButton();
         boolean isModalVisible = product.isModalTextVisible();
         Assert.assertTrue(isModalVisible);
+    }
+
+    @Test(priority = 12)
+    public void tc12_CartIconVisible() {
+        boolean isVisible = navBar.isCartIconVisible();
+        product.closeModal();
+        Assert.assertTrue(isVisible);
+    }
+
+    @Test(priority = 13)
+    public void tc13_ClickCartIcon() {
+        navBar.clickCartIcon();
+        boolean isCartPageVisible = cart.isShoppingCartTextVisible();
+        Assert.assertTrue(isCartPageVisible);
+    }
+
+    @Test(priority = 14)
+    public void tc14_QuantityFieldVisible() {
+        boolean isVisible = cart.isQuantityFieldVisible();
+        Assert.assertTrue(isVisible);
+    }
+
+    @Test(priority = 15)
+    public void tc15_AddQuantity() {
+        int currentQuantity = cart.getCurrentQuantity();
+        int expectedQuantity = currentQuantity + 1;
+        cart.clickPlusButton();
+        int actualQuantity = cart.getCurrentQuantity();
+        Assert.assertEquals(actualQuantity, expectedQuantity);
+    }
+
+    @Test(priority = 16)
+    public void tc16_SubtractQuantity() {
+        int currentQuantity = cart.getCurrentQuantity();
+        int expectedQuantity = currentQuantity - 1;
+        cart.clickMinusButton();
+        int actualQuantity = cart.getCurrentQuantity();
+        Assert.assertEquals(actualQuantity, expectedQuantity);
+    }
+
+    @Test(priority = 17)
+    public void tc17_PriceVisible() {
+        boolean isVisible = cart.isPriceVisible();
+        Assert.assertTrue(isVisible);
+    }
+
+    @Test(priority = 18)
+    public void tc18_AddAnotherBookToCart() {
+        navBar.searchByBookTitle(bookTitle2);
+        searchProduct.clickProduct(bookTitle2);
+        product.clickAddToCartButton();
+        boolean isModalVisible = product.isModalTextVisible();
+        Assert.assertTrue(isModalVisible);
+        product.closeModal();
+        navBar.clickCartIcon();
+        boolean isCartPageVisible = cart.isShoppingCartTextVisible();
+        Assert.assertTrue(isCartPageVisible);
+    }
+
+    @Test(priority = 19)
+    public void tc19_RemoveFirstBookFromCart() {
+        cart.clickRemoveButtonFirstBook();
+        boolean isFirstBookRemoved = cart.isAlertRemovedVisible();
+        Assert.assertTrue(isFirstBookRemoved);
+    }
+
+    @Test(priority = 20)
+    public void tc20_RemoveSecondBookFromCart() {
+        cart.clickRemoveButtonSecondBook();
+        boolean isEmptyCartTextVisible = cart.isEmptyCartTextVisible();
+        Assert.assertTrue(isEmptyCartTextVisible);
     }
 
     @AfterTest
