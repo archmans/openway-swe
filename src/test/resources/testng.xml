@@ -2,9 +2,9 @@
 
 <suite name="TryTest" verbose="1">
     <test name="TryTest">
-        <parameter name="url" value="https://www.youtube.com/"/>
+        <parameter name="url" value="https://www.periplus.com/"/>
         <classes>
-            <class name="Test.TryTest"/>
+            <class name="test.ShoppingCartTest"/>
         </classes>
     </test>
 </suite>
