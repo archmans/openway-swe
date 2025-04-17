@@ -1,5 +1,6 @@
 package pageobjects;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,6 +20,9 @@ public class NavBar {
 
     @FindBy(xpath = "//div[@class='search-bar']//input[@id='filter_name']")
     WebElement searchField;
+
+    @FindBy(xpath = "//div[@id='show-your-cart']//i[@class='ti-bag']")
+    WebElement cartIcon;
 
     public NavBar(WebDriver driver) {
         this.driver = driver;
@@ -42,5 +46,16 @@ public class NavBar {
         searchField.clear();
         wait.until(ExpectedConditions.elementToBeClickable(searchField)).sendKeys(bookTitle);
         searchField.sendKeys(Keys.RETURN);
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("preloader")));
+    }
+
+    public boolean isCartIconVisible() {
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("preloader")));
+        return wait.until(ExpectedConditions.visibilityOf(cartIcon)).isDisplayed();
+    }
+
+    public void clickCartIcon() {
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("preloader")));
+        wait.until(ExpectedConditions.elementToBeClickable(cartIcon)).click();
     }
 }

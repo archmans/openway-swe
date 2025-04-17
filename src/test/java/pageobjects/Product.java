@@ -22,6 +22,9 @@ public class Product {
     @FindBy(xpath = "//div[@class='modal-text']")
     WebElement modalText;
 
+    @FindBy(xpath = "//i[@class='ti-close']")
+    WebElement closeButton;
+
     public Product(WebDriver driver) {
         this.driver = driver;
         wait = new WebDriverWait(driver, Duration.ofSeconds(30));
@@ -44,5 +47,9 @@ public class Product {
 
     public boolean isModalTextVisible() {
         return wait.until(ExpectedConditions.visibilityOf(modalText)).isDisplayed();
+    }
+
+    public void closeModal() {
+        wait.until(ExpectedConditions.elementToBeClickable(closeButton)).click();
     }
 }
