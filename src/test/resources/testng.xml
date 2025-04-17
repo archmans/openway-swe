@@ -6,6 +6,7 @@
         <parameter name="email" value="salmanalfa095@gmail.com"/>
         <parameter name="password" value="per1plu$LMN"/>
         <parameter name="bookTitle1" value="Why Nations Fail"/>
+        <parameter name="bookTitle2" value="Atomic Habits"/>
         <classes>
             <class name="test.ShoppingCartTest"/>
         </classes>
